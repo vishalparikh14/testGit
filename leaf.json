@@ -19,7 +19,7 @@
 <<<<<<< Updated upstream
 =======
 =======
-  "vlan":[10,30,40,50,60,70,80,90],
+  "vlan":[1000],
 >>>>>>> Stashed changes
 >>>>>>> Stashed changes
   "interfacesVlans":{
