@@ -1,0 +1,63 @@
+daemon TerminAttr
+  exec /usr/bin/TerminAttr -ingestgrpcurl={{ cvp }}:9910 -taillogs -ingestauth=key, -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent
+  no shutdown
+!
+service routing protocols model multi-agent
+!
+hostname {{ hostname }}
+!
+aaa authorization exec default local
+!
+{% for user, account in aaa.items() %}
+username {{user}} privilege {{account.privilege}} role {{account.role}} secret {{account.secret}} {{account.password}}
+{% endfor %}
+!
+{% for vlanId in vlan -%}
+vlan {{ vlanId }}
+{% endfor %}
+!
+{% for name, int in interfaces.items() %}
+interface {{ name }}
+{% if int.type == 'fabric' %}
+  description {{ int.description }}
+  mtu 9214
+  no switchport
+  ip address {{ int.ip }}
+{% endif %}
+{% if int.type == 'bgpLoopback' %}
+  description BGP
+  ip address {{ int.ip }}
+{% endif %}
+{% if int.type == 'vxlanLoopback' %}
+  description VXLAN
+  ip address {{ int.ip }}
+{% endif %}
+{% if int.type == 'management' %}
+  no lldp transmit
+  no lldp receive
+  ip address {{ int.ip }}
+{% endif %}
+!
+{% endfor %}
+
+{% for name, int in interfacesVlans.items() %}
+interface {{ name }}
+  ip address virtual {{int.ip}}/24
+  description {{int.description}}
+!
+{% endfor %}
+
+interface vxlan 1
+  vxlan source-interface Loopback1
+  vxlan udp-port 4789
+  {% for vlanId in vlan %}
+  vxlan vlan {{ vlanId }} vni {{10000 + vlanId }}
+  {% endfor %}
+!
+ip route 0.0.0.0/0 {{mgntGw}}
+!
+ip routing
+!
+management api http-commands
+  protocol http
+  no shutdown
