@@ -1,0 +1,60 @@
+{
+  "aaa":{
+    "dwarf":{
+      "privilege":15,
+      "role":"network-admin",
+      "secret":0,
+      "password":"arista"
+    },
+    "test":{
+      "privilege":15,
+      "role":"network-admin",
+      "secret":0,
+      "password":"arista"
+    }
+  },
+  "cvp":"10.83.28.173",
+  "mgntGw":"10.83.28.1",
+  "vlan":[10,30],
+  "interfacesVlans":{
+    "vlan10": {
+      "ip": "192.168.210.254",
+      "description": "vlan10"
+    },
+    "vlan30": {
+      "ip": "192.168.230.254",
+      "description": "vlan30"
+    }
+  },
+  "hostname":"fdnode5",
+  "interfaces": {
+    "Ethernet1": {
+      "ip": "3.3.3.15/31",
+      "type": "fabric",
+      "description": "to_fdnode1"
+    },
+    "Ethernet2": {
+      "ip": "3.3.3.25/31",
+      "type": "fabric",
+      "description": "to_fdnode2"
+    },
+    "Loopback0": {
+      "ip": "1.1.1.23/32",
+      "type": "bgpLoopback",
+      "description": "to_bgpLoopback"
+    },
+    "Loopback1": {
+      "ip": "4.4.4.23/32",
+      "type": "vxlanLoopback",
+      "description": "to_vxlanLoopback"
+    },
+    "Management1": {
+      "ip": "10.83.28.171/22",
+      "type": "management"
+    }
+  }
+
+
+
+
+}
